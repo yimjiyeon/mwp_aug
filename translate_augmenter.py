@@ -12,7 +12,8 @@ def parse_args():
 
     parser = argparse.ArgumentParser(description='input')
     parser.add_argument('--input-file', default='sample.xlsx', help='the dir to save logs and models')
-    parser.add_argument('--lang', default='en', help='the dir to save logs and models')
+    parser.add_argument('--lang', default='en', help='the dir to save logs and models', nargs='+')
+    # parser.add_argument('--list_data', type=int, nargs='+')
 
     args = parser.parse_args()
     return args
@@ -54,19 +55,21 @@ def main():
     args = parse_args()
 
     input_file = args.input_file
-    lang = args.lang
-
+    langs = args.lang
+    print("langs: ", langs)
     ################################################################################
     q_col_name = '문제'
     pd_data, q_org_ko = read_excel(input_file, q_col_name)
 
-    trans_langs, rekos = retranslator_ko(lang, q_org_ko)
+    for lang in langs:
 
-    pd_data[lang] = trans_langs
-    pd_data[lang + '-ko-aug'] = rekos
+        trans_langs, rekos = retranslator_ko(lang, q_org_ko)
 
-    ################################################################################
-    refined_pd_data = refine_augmented_data(lang, pd_data)
+        # pd_data[lang] = trans_langs
+        pd_data[lang + '-ko-aug'] = rekos
+
+        ################################################################################
+        refined_pd_data = refine_augmented_data(lang, pd_data)
 
 
     with pd.ExcelWriter(input_file) as writer:

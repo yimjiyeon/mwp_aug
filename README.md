@@ -9,7 +9,7 @@ pip install googletrans
 ## 다국어 번역기반 증강
 실행 코드 예시
 ``` 
-python translate_augmenter.py --input-file sample.xlsx --lang en
+python translate_augmenter.py --input-file sample.xlsx --lang en zh-cn
 ```
 번역가능한 언어리스트  : --lang {key}
 ```
